@@ -13,7 +13,7 @@ export class UserRepositoryImplPostgress {
         }).then((u) => {
             return u
         }).catch((err) => {
-            return err
+            throw({type: "USER_REPOSITORY_ERROR", value: err, statusCode: 404})
         });
         return response
     }
@@ -21,14 +21,21 @@ export class UserRepositoryImplPostgress {
     public async findOne(where: any): Promise<any> {
         const response = User.findOne({ where: where })
         .then((u) => { return u})
-        .catch((err) => { return err })
+        .catch((err) => { throw({type: "USER_REPOSITORY_ERROR", value: err, statusCode: 404}) })
         return response
     }
 
     public async AllUser() {
-        const response = User.findAll().then((u) => {
+        const response = User.findAll({where: {is_active: true}}).then((u) => {
             return u
-        }).catch(err => { return err })
+        }).catch(err => { throw({type: "USER_REPOSITORY_ERROR", value: err, statusCode: 404}) })
+        return response
+    }
+
+    public async AllDeletedUsers() {
+        const response = User.findAll({where: {is_active: false}}).then((u) => {
+            return u
+        }).catch(err => { throw({type: "USER_REPOSITORY_ERROR", value: err, statusCode: 404}) })
         return response
     }
 

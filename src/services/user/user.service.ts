@@ -28,6 +28,13 @@ export class userServiceImpl {
         return response
     }
 
+    public async getDeletedUsers() {
+        console.log('shemovida')
+        const response = await repositoryes.userRepository.AllDeletedUsers()
+        console.log(response)
+        return response
+    }
+
     public async deleteUser(id: any){
         const response = await repositoryes.userRepository.DeleteUser(id)
         return response

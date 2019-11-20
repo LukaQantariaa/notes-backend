@@ -2,6 +2,7 @@ import express, {Request, Response, NextFunction, Application} from "express";
 import morgan from "morgan"
 import dotenv from 'dotenv'
 import * as bodyParser from 'body-parser'
+import * as fileUpload from 'express-fileupload'
 
 import { db } from './config/database'
 import * as routes from "./routes";
@@ -29,6 +30,7 @@ class App {
 
     routes() {
         this.app.use(routes.userPath, routes.userRoutes);
+        this.app.use(routes.notesPath, routes.notesRoutes);
     }
 
     start() {

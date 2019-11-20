@@ -18,6 +18,11 @@ export class userController {
         return response
     }
 
+    public async getDeletedUsers() {
+        const response = await services.userService.getDeletedUsers()
+        return response
+    }
+
     public async registerUser(body: any) {
         // request params
         const user = {
@@ -42,4 +47,5 @@ export class userController {
         const response = services.userService.deleteUser(parseInt(id));
         return response
     }
+
 }
