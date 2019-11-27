@@ -1,7 +1,7 @@
 import { notesServiceImpl } from '../../services/notes/notes.service'
 import { noteSchema } from '../../validators/notes/note'
 import { Files } from '../../shared/helpers/files'
-import { json } from 'sequelize'
+import { json, ARRAY } from 'sequelize'
 
 const services = {
     noteService: new notesServiceImpl()
@@ -57,12 +57,12 @@ export class notesController {
 
         //Service
         const response = await services.noteService.createNote(request)
+        return response    
+    }
+
+    public async deleteNote(id: any) {
+        const response = await services.noteService.deleteNote(id)
         return response
-        
-
-
-
-        
     }
 
 }

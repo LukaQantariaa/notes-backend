@@ -25,6 +25,15 @@ router.post('/create', async (req:Request, res:Response, next: NextFunction) => 
     }
 });
 
+router.delete('/delete/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const response = await controllers.notesController.deleteNote(req.params.id)
+        res.send(apiSuccessHandler(response))
+    } catch(err) {
+        next(err)
+    }
+})
+
 
 
 

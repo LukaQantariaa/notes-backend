@@ -24,23 +24,23 @@ Note.init(
       primaryKey: true
     },
     imagePath: {
-      type: new DataTypes.STRING(128),
+      type: DataTypes.STRING(128),
       allowNull: true
     },
     labels: {
-      type: new DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true
     },
     title: {
-      type: new DataTypes.STRING(64),
+      type: DataTypes.STRING(64),
       allowNull: false
     },
     notes: {
-        type: new DataTypes.ARRAY(DataTypes.NUMBER),
+        type: DataTypes.ARRAY(DataTypes.TEXT),
         allowNull: false
     },
     color: {
-        type: new DataTypes.STRING(10),
+        type: DataTypes.STRING(10),
         allowNull: true
     },
     archived: {
