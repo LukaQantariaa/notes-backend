@@ -12,6 +12,7 @@ export class Note extends Model {
   public archived!: boolean;
   public done!: boolean;
   public is_active!: boolean;
+  public userId!: number
   //public readonly createdAt!: Date;
 }
 
@@ -24,27 +25,31 @@ Note.init(
     },
     imagePath: {
       type: new DataTypes.STRING(128),
-      allowNull: false
+      allowNull: true
     },
     labels: {
-      type: new DataTypes.ARRAY(DataTypes.NUMBER),
-      allowNull: false
+      type: new DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true
     },
     title: {
       type: new DataTypes.STRING(64),
       allowNull: false
     },
-    note: {
-        type: new DataTypes.STRING(128),
+    notes: {
+        type: new DataTypes.ARRAY(DataTypes.NUMBER),
         allowNull: false
     },
     color: {
         type: new DataTypes.STRING(10),
-        allowNull: false
+        allowNull: true
     },
     archived: {
         type: DataTypes.BOOLEAN,
         allowNull: false
+    },
+    userId: {
+      type: DataTypes.NUMBER,
+      allowNull: false
     },
     done: {
         type: DataTypes.BOOLEAN,

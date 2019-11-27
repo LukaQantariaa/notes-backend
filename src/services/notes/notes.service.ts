@@ -11,6 +11,11 @@ export class notesServiceImpl {
         return response
     }
 
+    public async createNote(note: any){
+        const response = await repositoryes.noteRepository.createNote(note)
+        return response
+    }
+
 
 
 }

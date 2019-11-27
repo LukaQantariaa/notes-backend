@@ -18,7 +18,8 @@ router.get('/', async (req:Request, res:Response, next: NextFunction) => {
 
 router.post('/create', async (req:Request, res:Response, next: NextFunction) => {
     try {
-        
+        const resposnse = await controllers.notesController.createNote(req.body, req.files)
+        res.send(apiSuccessHandler(resposnse))
     } catch(err) {
         next(err);
     }

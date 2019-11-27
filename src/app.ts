@@ -21,7 +21,8 @@ class App {
 
     config() {
         this.app.use(morgan('dev'));
-        this.app.use(bodyParser.urlencoded({ extended: false }))
+        this.app.use(bodyParser.urlencoded({ extended: true }))
+        this.app.use(fileUpload.default())
         db.authenticate()
             .then( ()=>{ console.log("Database connected!") } )
             .catch(() => { console.log('err') })

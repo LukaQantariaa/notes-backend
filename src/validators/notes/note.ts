@@ -10,6 +10,8 @@ export const noteSchema = Joi.object({
     notes: Joi.array()
         .required(),
     color: Joi.string(),
+    userId: Joi.number()
+        .required(),
     archived: Joi.boolean()
         .required(),
     done: Joi.boolean()
