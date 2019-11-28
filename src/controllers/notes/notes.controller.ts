@@ -1,7 +1,6 @@
 import { notesServiceImpl } from '../../services/notes/notes.service'
 import { noteSchema } from '../../validators/notes/note'
 import { Files } from '../../shared/helpers/files'
-import { json, ARRAY } from 'sequelize'
 
 const services = {
     noteService: new notesServiceImpl()
@@ -23,19 +22,27 @@ export class notesController {
         return response
     }
 
+    public async getAllDeletedNotes() {
+        const response = await services.noteService.getAllDeletedNotes()
+        return response
+    }
+
     public async createNote(body:any, files:any) {
 
         //Validate
+        console.log(body.notes)
+        console.log(typeof(body.notes))
         const request: any = {
             labels: body.labels,
             title: body.title,
-            notes: ['1','2','3'], // - - - - 
+            notes: body.notes,
             color: body.color,
             userId: body.userId,
             archived: false,
             done: false,
             is_active: true
         }
+        
 
         const validate = noteSchema.validate(request)
         if(validate.error) {
@@ -48,8 +55,8 @@ export class notesController {
         return response    
     }
 
-    public async deleteNote(id: any) {
-        const response = await services.noteService.deleteNote(id)
+    public async deleteNote(id: any, userId: any) {
+        const response = await services.noteService.deleteNote(id, userId)
         return response
     }
 
@@ -63,8 +70,29 @@ export class notesController {
                 request[property] = body[property];
             }
         });
+        
 
-        const response = await services.noteService.updateNote(id, request, files)
+        const response = await services.noteService.updateNote(id, request, files, body.userId)
+        return response
+    }
+
+    public async archivedNotes(userId: any) {
+        const response = await services.noteService.archivedNotes(userId)
+        return response
+    }
+
+    public async myNotes(userId: any) {
+        const response = await services.noteService.archivedNotes(userId)
+        return response
+    }
+
+    public async doneNotes(userId: any) {
+        const response = await services.noteService.doneNotes(userId)
+        return response
+    }
+
+    public async notDoneNotes(userId: any) {
+        const response = await services.noteService.notDoneNotes(userId)
         return response
     }
 

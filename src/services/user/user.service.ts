@@ -1,4 +1,5 @@
 import { UserRepositoryImplPostgress } from '../../repository/user/user.repository'
+import { generateToken } from '../../shared/helpers/token/generateToken'
 export interface userService {
     //getAddresses(): Promise<Array<Address>>;
     //createAddress(address: Address): Promise<Address>;
@@ -37,6 +38,21 @@ export class userServiceImpl {
 
     public async deleteUser(id: any){
         const response = await repositoryes.userRepository.DeleteUser(id)
+        return response
+    }
+
+    public async loginUser(user: any) {
+        const thisUser = await repositoryes.userRepository.findOne({username: user.username, password: user.password})
+        if( thisUser === null ) {
+            throw({type: "USER_SERVICE_ERROR", value: "User not found", statusCode: 404})
+        }
+        console.log(thisUser.id)
+        const token = generateToken(thisUser.id);
+        return { token: token }
+    }
+
+    public async getUser(id: any) {
+        const response = await repositoryes.userRepository.findOne({id: id})
         return response
     }
 

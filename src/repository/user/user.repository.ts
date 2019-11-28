@@ -18,7 +18,8 @@ export class UserRepositoryImplPostgress {
         return response
     }
 
-    public async findOne(where: any): Promise<any> {
+    public async findOne(where: any) {
+        console.log(where)
         const response = User.findOne({ where: where })
         .then((u) => { return u})
         .catch((err) => { throw({type: "USER_REPOSITORY_ERROR", value: err, statusCode: 404}) })

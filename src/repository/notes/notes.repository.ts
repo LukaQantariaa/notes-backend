@@ -3,10 +3,10 @@ import { Note } from '../../models/notes/notes.model'
 
 export class NoteRepositoryImplPostgress {
 
-    public async getAllNotes(){
-        const response = Note.findAll({where: {is_active: true}}).then((u) => {
+    public async getNotes(where:any){
+        const response = Note.findAll({where: where}).then((u) => {
             return u
-        }).catch(err => { throw({type: "NOTES_REPOSITORY_ERROR", value: err, statusCode: 404}) })
+        }).catch((err) => { throw({type: "NOTES_REPOSITORY_ERROR", value: err, statusCode: 404}) })
         return response
     }
 
@@ -58,7 +58,7 @@ export class NoteRepositoryImplPostgress {
                 throw(`Note not found with id ${id}`)
             }
         })
-        .catch(err => { throw({type: "USER_REPOSITORY_ERROR", value: "err", statusCode: 404}) })
+        .catch(err => { throw({type: "USER_REPOSITORY_ERROR", value: err, statusCode: 404}) })
         return response
     }
     

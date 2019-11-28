@@ -12,7 +12,12 @@ const helpers = {
 export class notesServiceImpl {
 
     public async getAllNotes() {
-        const response = repositoryes.noteRepository.getAllNotes();
+        const response = repositoryes.noteRepository.getNotes({is_active: true});
+        return response
+    }
+
+    public async getAllDeletedNotes() {
+        const response = repositoryes.noteRepository.getNotes({is_active: false});
         return response
     }
 
@@ -31,12 +36,17 @@ export class notesServiceImpl {
         return response
     }
 
-    public async deleteNote(id: any) {
+    public async deleteNote(id: any, userId: any) {
 
         // check if note exists  ( is active! )
         const note = await repositoryes.noteRepository.getNote({id: id})
         if( note === null ) {
             throw({type: "NOTES_SERVICE_ERROR", value: `Note not found on id ${id}`, statusCode: 404})
+        }
+
+        // If this note is created by this user
+        if( note.userId != userId ) {
+            throw({type: "NOTES_SERVICE_ERROR", value: `this note isn't created by userID: ${userId}`, statusCode: 404})
         }
 
         // delete image of note
@@ -53,17 +63,23 @@ export class notesServiceImpl {
         return response
     }
 
-    public async updateNote(id:any, request:any, files: any) {
+    public async updateNote(id:any, request:any, files: any, userId: any) {
 
         // if note exists
         const note = await repositoryes.noteRepository.getNote({id: id})
         if( note === null ) {
             throw({type: "NOTES_SERVICE_ERROR", value: `Note not found on id ${id}`, statusCode: 404})
         }
+
+        // If this note is created by this user
+        if( note.userId != userId ) {
+            throw({type: "NOTES_SERVICE_ERROR", value: `this note isn't created by userID: ${userId}`, statusCode: 404})
+        }
         
-        // upload file
+        // if file exists
         if(files) {
             if(files.image) {
+                // upload file
                 try {
                     const imagePath = await helpers.files.uploadFile(files.image, 'notes')
                     request['imagePath'] = imagePath
@@ -76,6 +92,25 @@ export class notesServiceImpl {
         // update note
         const response = await repositoryes.noteRepository.updateNote(request, id)
         return response
+    }
 
+    public async archivedNotes(userId: any) {
+        const response = repositoryes.noteRepository.getNotes({archived: true, userId: userId, is_active: true});
+        return response
+    }
+
+    public async myNotes(userId: any) {
+        const response = repositoryes.noteRepository.getNotes({userId: userId, is_active: true});
+        return response
+    }
+
+    public async doneNotes(userId: any) {
+        const response = repositoryes.noteRepository.getNotes({userId: userId, done: true});
+        return response
+    }
+
+    public async notDoneNotes(userId: any) {
+        const response = repositoryes.noteRepository.getNotes({userId: userId, done: false});
+        return response
     }
 }

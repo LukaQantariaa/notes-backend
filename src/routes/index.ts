@@ -1,4 +1,6 @@
 export { userRoutes } from './user/user.routes'
-export const userPath = '/user'
+export const userPath = '/users'
 export { notesRoutes } from './notes/notes.router'
 export const notesPath = '/notes'
+export { labelRoutes } from './labels/labels.router'
+export const labelPath = '/labels'

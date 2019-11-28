@@ -21,7 +21,8 @@ class App {
 
     config() {
         this.app.use(morgan('dev'));
-        this.app.use(bodyParser.urlencoded({ extended: true }))
+        this.app.use(bodyParser.urlencoded({ extended: false }))
+        this.app.use(bodyParser.json())
         this.app.use(fileUpload.default())
         db.authenticate()
             .then( ()=>{ console.log("Database connected!") } )
@@ -32,11 +33,12 @@ class App {
     routes() {
         this.app.use(routes.userPath, routes.userRoutes);
         this.app.use(routes.notesPath, routes.notesRoutes);
+        this.app.use(routes.labelPath, routes.labelRoutes)
     }
 
     start() {
         this.app.listen(process.env.port || 4000, ()=> {
-            console.log("Server on port ", 3000)
+            console.log("Server is runing ", 3000)
         });
     }
 

@@ -15,3 +15,14 @@ export const userSchema = Joi.object({
     is_active: Joi.boolean()
         .required()
 })
+
+export const loginUser = Joi.object({
+    username: Joi.string()
+        .min(3)
+        .max(16)
+        .required(),
+    password: Joi.string()
+        .min(6)
+        .max(128)
+        .required()
+})
