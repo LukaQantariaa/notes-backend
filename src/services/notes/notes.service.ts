@@ -16,7 +16,17 @@ export class notesServiceImpl {
         return response
     }
 
-    public async createNote(note: any){
+    public async createNote(note: any, files: any){
+        if(files){
+            if(files.image) {
+                try {
+                    const imagePath = await helpers.files.uploadFile(files.image, 'notes')
+                    note['imagePath'] = imagePath
+                } catch(err) {
+                    throw({type: "NOTES_CONTROLLER_ERROR", value: err, statusCode: 400})
+                }
+            }
+        }
         const response = await repositoryes.noteRepository.createNote(note)
         return response
     }
@@ -43,6 +53,29 @@ export class notesServiceImpl {
         return response
     }
 
+    public async updateNote(id:any, request:any, files: any) {
 
+        // if note exists
+        const note = await repositoryes.noteRepository.getNote({id: id})
+        if( note === null ) {
+            throw({type: "NOTES_SERVICE_ERROR", value: `Note not found on id ${id}`, statusCode: 404})
+        }
+        
+        // upload file
+        if(files) {
+            if(files.image) {
+                try {
+                    const imagePath = await helpers.files.uploadFile(files.image, 'notes')
+                    request['imagePath'] = imagePath
+                } catch(err) {
+                    throw({type: "NOTES_CONTROLLER_ERROR", value: err, statusCode: 400})
+                }
+            }
+        }
 
+        // update note
+        const response = await repositoryes.noteRepository.updateNote(request, id)
+        return response
+
+    }
 }

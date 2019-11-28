@@ -34,6 +34,15 @@ router.delete('/delete/:id', async (req: Request, res: Response, next: NextFunct
     }
 })
 
+router.put('/update/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const response = await controllers.notesController.updateNote(req.params.id, req.body, req.files)
+        res.send(apiSuccessHandler(response))
+    } catch(err) {
+        next(err)
+    }
+})
+
 
 
 

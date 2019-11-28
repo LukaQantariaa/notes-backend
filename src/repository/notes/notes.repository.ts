@@ -42,5 +42,24 @@ export class NoteRepositoryImplPostgress {
         .catch(err => { throw({type: "USER_REPOSITORY_ERROR", value: err, statusCode: 404}) })
         return response
     }
+
+    public async updateNote(note:any, id:any) {
+        const response = await Note.update(
+            note,
+            {
+                where: {id: id},
+                returning: true,
+            }
+        )
+        .then(u => {
+            if(u[0] === 1) {
+                return "Note updated!"
+            } else {
+                throw(`Note not found with id ${id}`)
+            }
+        })
+        .catch(err => { throw({type: "USER_REPOSITORY_ERROR", value: "err", statusCode: 404}) })
+        return response
+    }
     
 }

@@ -43,25 +43,28 @@ export class notesController {
             throw({type: "NOTES_CONTROLLER_ERROR", value: err, statusCode: 400})
         }
 
-        //upload photo
-        if(files){
-            if(files.image) {
-                try {
-                    const imagePath = await helpers.files.uploadFile(files.image, 'notes')
-                    request['imagePath'] = imagePath
-                } catch(err) {
-                    throw({type: "NOTES_CONTROLLER_ERROR", value: err, statusCode: 400})
-                }
-            }
-        }
-
         //Service
-        const response = await services.noteService.createNote(request)
+        const response = await services.noteService.createNote(request, files)
         return response    
     }
 
     public async deleteNote(id: any) {
         const response = await services.noteService.deleteNote(id)
+        return response
+    }
+
+    public async updateNote(id:any, body:any, files:any) {
+
+        // request
+        const propertyes = [ 'notes', 'title', 'color', 'archived', 'done', 'labels' ];
+        const request: any = {}
+        propertyes.forEach((property: string) => {
+            if( body[property] ) {
+                request[property] = body[property];
+            }
+        });
+
+        const response = await services.noteService.updateNote(id, request, files)
         return response
     }
 
